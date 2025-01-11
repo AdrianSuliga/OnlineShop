@@ -4,6 +4,15 @@ import { Users } from "./sqliteInitialize.js";
 const router = express.Router();
 export default router;
 
+// Register new user
+// URL: http://localhost:port/users/register
+// this function expects request body to have:
+// {
+//    userName: ...,
+//    email: ...,
+//    password: ...,
+//    adminRights: ...
+// }
 router.post("/register", async (req, res) => {
   const userMailCheck = await Users.findOne({
     where: {
@@ -45,6 +54,13 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Login user
+// URL: http://localhost:port/users/login
+// this function expects request body to have:
+// {
+//    email: ...,
+//    password: ...
+// }
 router.post("/login", async (req, res) => {
   const userCheck = await Users.findOne({
     where: {

@@ -1,6 +1,7 @@
 import { DataTypes, DATE, Sequelize } from "sequelize";
 import { sequelize } from "./sqliteCreate.js";
 
+// Create SQLite tables
 export const Users = sequelize.define(
   "Users",
   {

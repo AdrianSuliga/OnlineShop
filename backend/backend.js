@@ -14,6 +14,8 @@ const app = express();
 const port = 3000;
 
 app.use(express.json());
+
+// Redirect HTTP requests to service files
 app.use("/users", userService);
 app.use("/orders", orderService);
 app.use("/opinions", opinionService);
@@ -23,9 +25,11 @@ async function initServer() {
     await sequelize.authenticate();
     console.log("Connection with DB has been established");
 
+    // delete previoues entries from DB
     await sequelize.sync({ force: true });
     console.log("Tables created");
 
+    // fill DB with mock data
     Users.bulkCreate(getInitialUsers());
     OrderHistory.bulkCreate(getInitialOrders());
     UserOpinions.bulkCreate(getInitialOpinions());
@@ -39,7 +43,3 @@ async function initServer() {
 }
 
 initServer();
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});

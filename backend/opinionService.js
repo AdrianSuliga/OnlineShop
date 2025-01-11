@@ -5,6 +5,13 @@ const router = express.Router();
 export default router;
 
 // Add one new opinion about the product
+// URL: http://localhost:port/opinions/add/:productID
+// this function expects request body to have:
+// {
+//    UserID: ...,
+//    Content: ...
+// }
+// productID is passed in URL
 router.post("/add/:productID", async (req, res) => {
   const userCheck = await UserOpinions.findOne({
     where: {
@@ -37,6 +44,12 @@ router.post("/add/:productID", async (req, res) => {
 });
 
 // Delete opinions, if user is an admin, they can delete everything
+// URL: http://localhost:port/opinions/delete/:opinionID
+// this function expects request body to have:
+// {
+//    UserID: ...
+// }
+// opinionID is passed in URL
 router.delete("/delete/:opinionID", async (req, res) => {
   const opinionToDelete = await UserOpinions.findOne({
     where: {
@@ -79,6 +92,8 @@ router.delete("/delete/:opinionID", async (req, res) => {
 });
 
 // Get all opinions about the product
+// URL: http://localhost:port/opinions/:productID
+// no request body is needed
 router.get("/:productID", async (req, res) => {
   const opinions = await UserOpinions.findAll({
     where: {

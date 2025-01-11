@@ -4,6 +4,17 @@ import { OrderHistory } from "./sqliteInitialize.js";
 const router = express.Router();
 export default router;
 
+// Add new orders to DB
+// URL: http://localhost:port/orders/add
+// this function expects request body to have
+// {
+//    UserID: ...,
+//    ProductsBought: [
+//        ProductID: ...,
+//        Quantity: ...
+//    ]
+// }
+// it allows us to add a lot of products in one order
 router.post("/add", async (req, res) => {
   let allOrders = await OrderHistory.findAll();
   let newOrderID = -1;
@@ -31,6 +42,9 @@ router.post("/add", async (req, res) => {
   res.status(200).send({ info: "Added new orders" });
 });
 
+// Get all orders a user made
+// URL: http://localhost:port/orders/details/:userID
+// no request body is needed
 router.get("/details/:userID", async (req, res) => {
   const orders = await OrderHistory.findAll({
     where: {
@@ -61,6 +75,9 @@ router.get("/details/:userID", async (req, res) => {
   res.status(200).send({ Orders: OrdersToSend });
 });
 
+// Get specific order user made
+// URL: http://localhost:port/orders/details/:userID/:orderID
+// no request body is needed
 router.get("/details/:userID/:orderID", async (req, res) => {
   const orders = await OrderHistory.findAll({
     where: {

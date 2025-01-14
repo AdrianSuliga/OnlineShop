@@ -1,8 +1,15 @@
 import express from "express";
 import { OrderHistory } from "./sqliteInitialize.js";
+import cors from "cors";
 
 const router = express.Router();
 export default router;
+
+router.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 // Add new orders to DB
 // URL: http://localhost:port/orders/add

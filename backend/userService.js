@@ -1,8 +1,16 @@
 import express from "express";
 import { Users } from "./sqliteInitialize.js";
+import cors from "cors";
+import { generateToken } from "./generateJWT.js";
 
 const router = express.Router();
 export default router;
+
+router.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 // Register new user
 // URL: http://localhost:port/users/register
@@ -50,7 +58,8 @@ router.post("/register", async (req, res) => {
   if (newUser === null) {
     res.status(500).send({ info: "Failed to register new user" });
   } else {
-    res.status(200).send({ info: "User registered, you can now log in" });
+    const token = generateToken(newUser.id);
+    res.status(200).json({ toke: token, userID: newUser.UserID });
   }
 });
 
@@ -74,7 +83,8 @@ router.post("/login", async (req, res) => {
   }
 
   if (userCheck.Password === req.body.password) {
-    res.status(200).send({ info: "OK" });
+    const token = generateToken(userCheck.id);
+    res.status(200).json({ toke: token, userID: userCheck.UserID });
   } else {
     res.status(401).send({ info: "Wrong password" });
   }

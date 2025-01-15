@@ -19,8 +19,7 @@ const Review: React.FC<ReviewProps> = ({ review }) => {
     useEffect(() => {
         // Funkcja do pobierania nazwy użytkownika
         async function getUsername(id: number) {
-            if (user) {
-                try {
+            try {
                     const userResponse = await fetch(`http://localhost:3000/users/${id}`);
                     if (userResponse.ok) {
                         const userData = await userResponse.json();
@@ -31,10 +30,7 @@ const Review: React.FC<ReviewProps> = ({ review }) => {
                 } catch (error) {
                     setUsername("Anonymous User");  // W razie błędu ustawiamy nazwę na "Anonymous User"
                 }
-            } else {
-                setUsername("Anonymous User");  // Jeśli użytkownik nie jest zalogowany
             }
-        }
         
         getUsername(review.userID);  // Wywołanie funkcji po załadowaniu komponentu
 

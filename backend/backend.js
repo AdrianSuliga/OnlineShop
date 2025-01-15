@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { sequelize } from "./sqliteCreate.js";
 import { Users, OrderHistory, UserOpinions } from "./sqliteInitialize.js";
 import {
@@ -13,12 +14,17 @@ import opinionService from "./opinionService.js";
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 // Redirect HTTP requests to service files
 app.use("/users", userService);
 app.use("/orders", orderService);
 app.use("/opinions", opinionService);
+
+app.listen(5000, () => {
+  console.log("Backend running on http://localhost:5000");
+});
 
 async function initServer() {
   try {

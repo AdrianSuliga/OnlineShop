@@ -69,17 +69,17 @@ export const OrderHistory = sequelize.define(
 export const UserOpinions = sequelize.define(
   "UserOpinions",
   {
-    OpinionID: {
+    UserID: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    UserID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     ProductID: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false
+    },
+    Rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -114,9 +114,9 @@ export function getInitialUsers() {
       AdminRights: false,
     },
     {
-      UserName: "Dominik Oleksy",
-      Email: "dominik.oleksy@gmail.com",
-      Password: "superSafePassword",
+      UserName: "Dominik Matuszczyk",
+      Email: "dominikmat@gmail.com",
+      Password: "passwd",
       AdminRights: false,
     },
     {
@@ -166,66 +166,77 @@ export function getInitialOpinions() {
     {
       UserID: 1,
       ProductID: 1,
+      Rating: 5,
       Content: "This is awesome! Highly recommend",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 2,
       ProductID: 3,
+      Rating: 1,
       Content: "It was delivered to me damaged :((",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 1,
       ProductID: 5,
+      Rating: 4,
       Content: "Decent product for the price.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 3,
       ProductID: 7,
+      Rating: 5,
       Content: "Exceeded my expectations, great quality!",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 4,
       ProductID: 10,
+      Rating: 3,
       Content: "Not worth the money. Poor quality.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 2,
       ProductID: 8,
+      Rating: 5,
       Content: "Fast delivery and works perfectly.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 1,
       ProductID: 15,
+      Rating: 2,
       Content: "The product description was misleading.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 3,
       ProductID: 20,
+      Rating: 5,
       Content: "Stylish and functional. Love it!",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 4,
       ProductID: 12,
+      Rating: 3,
       Content: "I had issues initially, but customer support was helpful.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 2,
       ProductID: 18,
+      Rating: 5,
       Content: "Great value for the price. Highly recommended.",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     {
       UserID: 1,
       ProductID: 18,
+      Rating: 4,
       Content: "Actually, pretty good",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },

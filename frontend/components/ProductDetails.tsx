@@ -46,8 +46,8 @@ const ProductDetails: React.FC = () => {
       <p><strong>Description:</strong> {product.description}</p>
       <p><strong>Price:</strong> ${product.price}</p>
       <p><strong>Category:</strong> {product.category}</p>
-      <ReviewList/>
-    </div>
+      <ReviewList productID={product.id} />    
+      </div>
   );
 };
 

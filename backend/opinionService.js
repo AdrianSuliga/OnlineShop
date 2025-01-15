@@ -32,6 +32,7 @@ router.post("/add/:productID", async (req, res) => {
     ProductID: req.params.productID,
     UserID: req.body.UserID,
     Content: req.body.Content,
+    Rating: req.body.Rating,
     OpinionDate: mockDate.toISOString(),
   });
 

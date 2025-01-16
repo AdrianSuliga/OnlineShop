@@ -36,7 +36,7 @@ const OrderHistory = () => {
       setError(null);
 
       try {
-        const response = await fetch(`http://localhost:5173/orders/details/${user.userID}`);
+        const response = await fetch(`http://localhost:3000/orders/details/${user.userID}`);
         if (!response.ok) {
           throw new Error(`Error fetching orders: ${response.statusText}`);
         }

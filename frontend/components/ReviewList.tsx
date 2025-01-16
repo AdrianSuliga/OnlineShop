@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Review from './Review';
 import { useAuth } from './AuthProvider';
+import { Input,Button, Rate, Grid, Flex, Collapse, CollapseProps } from "antd";
+import Panel from 'antd/es/splitter/Panel';
 
 interface ReviewType {
     userID: number;
@@ -117,50 +119,64 @@ interface ReviewType {
         }
     }, [user, productID]);
 
+    const dislpayItems: CollapseProps['items'] = [
+      {
+        key: '1',
+        label: 'User Reviews',
+        children:
+          <div style={{ marginTop: '10px' }}>
+              {reviews.map((review, index) => (
+                <Review
+                  key={index}
+                  review={review}
+                />
+              ))}
+              {reviews.length === 0 && <p>No reviews yet. Be the first to add one!</p>}
+          </div>
+      },
+      {
+        key: '2',
+        label: 'Add a Review',
+        children: 
+          <div style={{ marginTop: '20px' }}>
+          {!user && <p>You must be logged in to add a review.</p>}
+          {user && hasReviewed && <p>You have already added a review for this product.</p>}
+          {user && !hasReviewed && ( 
+            <div style={{ marginTop: '20px' }}>
+                <h4>Add a Review</h4>
+
+                <Flex align='center'>
+                  <p style={{ marginRight: '20px' }}> Rating:  </p>
+                  <Rate
+                    defaultValue={5}
+                    value={newReview.rating}
+                    onChange={(e) => setNewReview({ ...newReview, rating: e?.valueOf() || 5})}
+                    style={{ display:"flex", marginBottom: '10px' }}
+                    />
+                </Flex>
+                <Input
+                  type='text'
+                  placeholder="Write your review here"
+                  value={newReview.content}
+                  onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
+                  style={{ display: 'block', marginBottom: '10px', width: '100%', height: '80px' }}
+                  
+                  />
+                <Button onClick={handleAddReview} variant='solid' color='primary'>
+                  Submit
+                </Button>
+              </div>
+            )}
+            </div>
+      },
+    ];
+
     return (
         <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '5px', marginTop: '0px' }}>
         <h3>Average Rating: {calculateAverageRating()}</h3>
   
         {/* Lista opinii */}
-        <div style={{ marginTop: '10px' }}>
-          {reviews.map((review, index) => (
-            <Review
-              key={index}
-              review={review}
-            />
-          ))}
-          {reviews.length === 0 && <p>No reviews yet. Be the first to add one!</p>}
-        </div>
-  
-        {/* Formularz dodawania nowej opinii */}
-        <div style={{ marginTop: '20px' }}>
-        {!user && <p>You must be logged in to add a review.</p>}
-        {user && hasReviewed && <p>You have already added a review for this product.</p>}
-        {user && !hasReviewed && ( <div style={{ marginTop: '20px' }}>
-              <h4>Add a Review</h4>
-              <p> Rating (1-5): </p>
-              <input
-                type="number"
-                min="1"
-                max="5"
-                defaultValue={5}
-                placeholder="Rating (1-5)"
-                value={newReview.rating}
-                onChange={(e) => setNewReview({ ...newReview, rating: Number(e.target.value) })}
-                style={{ display:"flex", marginBottom: '10px' }}
-              />
-              <textarea
-                placeholder="Write your review here"
-                value={newReview.content}
-                onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
-                style={{ display: 'block', marginBottom: '10px', width: '100%', height: '80px' }}
-              />
-              <button onClick={handleAddReview} style={{ padding: '10px 20px' }}>
-                Submit
-              </button>
-            </div>
-          )}
-          </div>
+        <Collapse items={dislpayItems} />
       </div>
     );
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ReviewList from './ReviewList';
+import { Button,Col,Collapse,CollapseProps,Divider,Image, Row } from "antd";
+import Product from './Product';
 
 interface ProductType {
     id: number;
@@ -25,7 +27,6 @@ const ProductDetails: React.FC = () => {
             const response2 = await fetch(`http://localhost:3000/stocklevel/${id}`);
             const data = await response.json();
             const data2 = await response2.json();
-            alert(JSON.stringify(data2[0]))
             setProduct({ ...data, stock: data2["StockLevel"] || 10 }); // Domyślnie ustawiamy `10`, jeśli `stock` nie jest dostępny
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -53,29 +54,65 @@ const ProductDetails: React.FC = () => {
   if (loading) return <p>Loading...</p>;
   if (!product) return <p>Product not found.</p>;
 
+  const productData: CollapseProps['items'] = [
+    {
+      key: '1',
+      label: 'Opis Produktu',
+      children: <p>{product.description}</p>,
+    },
+    {
+      key: '2',
+      label: 'Opinie',
+      children: (
+        <ReviewList productID={product.id} />
+      ),
+    },
+  ];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>{product.title}</h1>
-      <img src={product.image} alt={product.title} style={{ width: '200px' }} />
-      <p><strong>Description:</strong> {product.description}</p>
-      <p><strong>Price:</strong> ${product.price}</p>
-      <p><strong>Category:</strong> {product.category}</p>
-      <p><strong>Stock:</strong> {product.stock} available</p> {/* Wyświetlanie liczby dostępnych sztuk */}
-      <div style={{ marginTop: '20px' }}>
-        <input
-          type="number"
-          min="1"
-          max={product.stock}
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          style={{ width: '60px', marginRight: '10px' }}
-        />
-        <button onClick={handleAddToCart} style={{ padding: '10px 20px' }}>
-          Add to Cart
-        </button>
-      </div>
-      <ReviewList productID={product.id} />
+    <div style={{ padding: '10px', margin: '10px' }}>
+        
+        <h2>{product.title}</h2>
+
+        <Row gutter={24} align="top">
+            {/* Kolumna obrazka */}
+            <Col span={6} style={{ textAlign: 'center' }}>
+            <Image
+                src={product.image}
+                alt={product.title}
+                style={{ maxWidth: '100%', height: 'auto', alignItems:'center' }}
+            />
+            </Col>
+
+            {/* Kolumna opisu */}
+            <Col span={12}>
+                <p>
+                    <strong>Cena:</strong> {product.price} PLN
+                </p>
+                
+                <Divider />
+
+                <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+                    <p><strong>Magazyn:</strong> {product.stock} dostepne</p>
+                    <p><strong> Dodaj do koszyka: </strong></p>
+                    <input
+                    type="number"
+                    min="1"
+                    max={product.stock}
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    style={{ width: '60px', marginRight: '10px' }}
+                    />
+                    <Button onClick={handleAddToCart} color='primary' variant='solid'>
+                    Add to Cart
+                    </Button>
+                </div>
+
+                <Divider />
+
+                <Collapse items={productData} defaultActiveKey={[]} />
+            </Col>
+        </Row>
     </div>
   );
 };

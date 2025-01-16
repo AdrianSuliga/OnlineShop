@@ -89,3 +89,12 @@ router.post("/login", async (req, res) => {
     res.status(401).send({ info: "Wrong password" });
   }
 });
+
+router.get("/:userID", async (req, res) => {
+  res.status(200).send( await Users.findOne({
+    where: {
+      UserID: req.params.userID,
+    },
+  }));
+});
+

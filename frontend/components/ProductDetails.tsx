@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import ReviewList from './ReviewList';
 import { Button,Col,Collapse,CollapseProps,Divider,Image, Row } from "antd";
 import Product from './Product';
+import PurchaseWindow from './PurchaseWindow';
 
 interface ProductType {
     id: number;
@@ -24,10 +25,8 @@ const ProductDetails: React.FC = () => {
     const fetchProduct = async () => {
         try {
             const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-            const response2 = await fetch(`http://localhost:3000/stocklevel/${id}`);
             const data = await response.json();
-            const data2 = await response2.json();
-            setProduct({ ...data, stock: data2["StockLevel"] || 10 }); // Domyślnie ustawiamy `10`, jeśli `stock` nie jest dostępny
+            setProduct(data); // Domyślnie ustawiamy `10`, jeśli `stock` nie jest dostępny
         } catch (error) {
             console.error('Error fetching product details:', error);
         } finally {
@@ -37,19 +36,6 @@ const ProductDetails: React.FC = () => {
 
     fetchProduct();
   }, [id]);
-
-  const handleAddToCart = () => {
-    if (product) {
-      if (quantity > product.stock) {
-        alert('Not enough items in stock!');
-      } else {
-        alert(`Added ${quantity} item(s) to the cart.`);
-        setProduct({ ...product, stock: product.stock-quantity });
-
-        // Tutaj możesz dodać logikę wysyłania danych do koszyka
-      }
-    }
-  };
 
   if (loading) return <p>Loading...</p>;
   if (!product) return <p>Product not found.</p>;
@@ -86,27 +72,13 @@ const ProductDetails: React.FC = () => {
 
             {/* Kolumna opisu */}
             <Col span={12}>
-                <p>
+                <p style={{ marginTop:'20px'}}>
                     <strong>Cena:</strong> {product.price} PLN
                 </p>
                 
                 <Divider />
 
-                <div style={{ marginTop: '40px', marginBottom: '40px' }}>
-                    <p><strong>Magazyn:</strong> {product.stock} dostepne</p>
-                    <p><strong> Dodaj do koszyka: </strong></p>
-                    <input
-                    type="number"
-                    min="1"
-                    max={product.stock}
-                    value={quantity}
-                    onChange={(e) => setQuantity(Number(e.target.value))}
-                    style={{ width: '60px', marginRight: '10px' }}
-                    />
-                    <Button onClick={handleAddToCart} color='primary' variant='solid'>
-                    Add to Cart
-                    </Button>
-                </div>
+                <PurchaseWindow productID={Number(id) | 0} />
 
                 <Divider />
 

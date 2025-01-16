@@ -82,6 +82,7 @@ interface ReviewType {
         if (response.ok) {
           setReviews([...reviews, review]);
           setNewReview({ userID: 0, rating: 0, content: '' });
+          setHasReviewed(true);
         } else {
           const data = await response.json();
           console.error('Failed to add review:', data.info);
@@ -97,10 +98,10 @@ interface ReviewType {
           try {
               const response = await fetch(`http://localhost:3000/opinions/${productID}`);
               if (response.ok) {
-                const data = await response.json();
-                // Sprawdzamy, czy wśród wszystkich opinii istnieje opinia tego użytkownika
-                const userReviewed = data.some((review: any) => review.UserID === user.userID);
-                setHasReviewed(userReviewed); // Jeśli tak, ustawiamy hasReviewed na true
+                  const data = await response.json();
+                  // Sprawdzamy, czy wśród wszystkich opinii istnieje opinia tego użytkownika
+                  const userReviewed = data.some((review: any) => review.UserID === user.userID);
+                  setHasReviewed(userReviewed); // Jeśli tak, ustawiamy hasReviewed na true
                 }
               else {
                   setHasReviewed(false);

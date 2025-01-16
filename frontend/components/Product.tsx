@@ -1,6 +1,7 @@
-import { Col, Collapse, CollapseProps, Row, Image } from 'antd';
+import { Col, Collapse, CollapseProps, Row, Image, Divider } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import PurchaseWindow from './PurchaseWindow';
 
 interface ProductType {
   id: number;
@@ -16,14 +17,21 @@ interface ProductProps {
 }
 
 const Product: React.FC<ProductProps> = ({ product }) => {
+  const navigate = useNavigate();
+
   const productData: CollapseProps['items'] = [
     {
       key: '1',
+      label: 'Szybkie Zakupy',
+      children: <PurchaseWindow productID={product.id}/>
+    },
+    {
+      key: '2',
       label: 'Opis Produktu',
       children: <p>{product.description}</p>,
     },
     {
-      key: '2',
+      key: '3',
       label: 'Opinie',
       children: (
         <Link
@@ -37,26 +45,37 @@ const Product: React.FC<ProductProps> = ({ product }) => {
   ];
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
+    <div className="gradientBackground" id="productBackground">
+      <Divider />
+
       <Row gutter={24} align="top">
         {/* Kolumna obrazka */}
-        <Col span={4} style={{ textAlign: 'center' }}>
+        <Col span={4} style={{ alignItems: 'center'}}>
           <Image
             src={product.image}
             alt={product.title}
-            style={{ maxWidth: '100%', height: 'auto', alignItems:'center' }}
+            style={{    
+              maxWidth: '100%',
+              height: 'auto',
+              alignItems:'center',
+              color: 'white',
+            }}
           />
         </Col>
 
         {/* Kolumna opisu */}
         <Col span={16}>
-          <h2>{product.title}</h2>
+            <Link to={`/products/${product.id}`} style={{color:'#3f48cc'}}>
+              <h2>{product.title}</h2>
+            </Link>
           <p>
             <strong>Cena:</strong> {product.price} PLN
           </p>
           <Collapse items={productData} defaultActiveKey={[]} />
         </Col>
       </Row>
+
+      <Divider />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Product from './Product';
+import { Divider, Input, Select } from 'antd';
 
 
 interface ProductType {
@@ -8,6 +9,7 @@ interface ProductType {
     description: string;
     category: string;
     price: number;
+    image: string;
   }
 
 const ProductList: React.FC  = () => {
@@ -61,34 +63,47 @@ const ProductList: React.FC  = () => {
 
   return (
         <div>
-            <h1>Products:</h1>
+            <div style={{display:'flex', flexDirection:'row'}}>
+              {/* Wyszukiwarka */}
+              <Input className='gradientBackground'
+                  type="text"
+                  width='100px'
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ 
+                    padding: '10px', 
+                    marginRight: '10px', 
+                    marginLeft:'20px', 
+                    fontSize: '16px', 
+                    color:'white',
+                    borderWidth: '1px',
+                    borderColor: 'black'
+                  }}
+                  />
 
-            {/* Wyszukiwarka */}
-            <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: '10px', marginRight: '10px', fontSize: '16px' }}
-            />
-
-            {/* Dropdown kategorii */}
-            <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                style={{ padding: '10px', fontSize: '16px' }}
+              {/* Dropdown kategorii */}
+              <Select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.valueOf())}
+                  style={{  
+                    height:'auto',
+                    marginRight:'20px',
+                    border: 'black 1px'
+                  }}
                 >
-                {categories.map(category => (
+                  {categories.map(category => (
                     <option key={category} value={category}>
-                    {category === 'all' ? 'All Categories' : category}
-                    </option>
-                ))}
-            </select>
+                      {category === 'all' ? 'All Categories' : category}
+                      </option>
+                  ))}
+              </Select>
+            </div>
 
         {/* Lista produktów */}
             <div>
                 {filteredProducts.map(product => (
-                <Product product={product} />
+                  <Product product={product} /> 
                 ))}
             </div>
         </div>

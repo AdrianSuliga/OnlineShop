@@ -2,7 +2,6 @@ import React, { useState, createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 
-
 const LoginPage = () => {
     const [registering, setRegistering] = useState(false);
     const navigate = useNavigate();

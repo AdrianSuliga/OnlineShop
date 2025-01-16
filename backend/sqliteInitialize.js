@@ -99,6 +99,26 @@ export const UserOpinions = sequelize.define(
   }
 );
 
+export const ProductStockLevels = sequelize.define(
+  "ProductStockLevels",
+  {
+    ProductID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
+    },
+    StockLevel: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+    createdAt: false,
+    updatedAt: false,
+  }
+);
+
 export function getInitialUsers() {
   return [
     {
@@ -240,5 +260,33 @@ export function getInitialOpinions() {
       Content: "Actually, pretty good",
       OpinionDate: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
+  ];
+}
+
+export function getInitalStockLevels() {
+  return [
+    { ProductID: 1, StockLevel: 100 },
+    { ProductID: 2, StockLevel: 100 },
+    { ProductID: 3, StockLevel: 100 },
+    { ProductID: 4, StockLevel: 100 },
+    { ProductID: 5, StockLevel: 100 },
+
+    { ProductID: 6, StockLevel: 100 },
+    { ProductID: 7, StockLevel: 100 },
+    { ProductID: 8, StockLevel: 100 },
+    { ProductID: 9, StockLevel: 100 },
+    { ProductID: 10, StockLevel: 100 },
+
+    { ProductID: 11, StockLevel: 100 },
+    { ProductID: 12, StockLevel: 100 },
+    { ProductID: 13, StockLevel: 100 },
+    { ProductID: 14, StockLevel: 100 },
+    { ProductID: 15, StockLevel: 100 },
+
+    { ProductID: 16, StockLevel: 100 },
+    { ProductID: 17, StockLevel: 100 },
+    { ProductID: 18, StockLevel: 100 },
+    { ProductID: 19, StockLevel: 100 },
+    { ProductID: 20, StockLevel: 100 },
   ];
 }

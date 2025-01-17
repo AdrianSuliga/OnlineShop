@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, CSSProperties } from 'react';
+import CSS from "csstype";
 import { useAuth } from "./AuthProvider";
 import { Card, Typography, List, Avatar, Spin, Alert } from 'antd';
-import './OrderHistory.css';
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -28,6 +29,7 @@ const OrderHistory = () => {
   const [error, setError] = useState<string | null>(null);
   const [productDetails, setProductDetails] = useState<{ [key: string]: ProductDetails }>({});
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -89,7 +91,7 @@ const OrderHistory = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat('pl-PL', {
       dateStyle: 'medium',
       timeStyle: 'short',
     }).format(date);
@@ -103,48 +105,87 @@ const OrderHistory = () => {
     return <Alert message="Error" description={error} type="error" showIcon />;
   }
 
-  return (
-    <div className="order-history-container">
-      <Title level={2} style={{ color: 'white', textAlign: 'center' }}>Order Details</Title>
-      {orders.length === 0 ? (
-        <Alert message="No orders found" type="info" showIcon style={{ margin: '20px auto' }} />
-      ) : (
-        <List
-          grid={{ gutter: 16, column: 1 }}
-          dataSource={orders}
-          renderItem={(order) => (
-            <List.Item>
-              <Card
-                title={<Text style={{ color: '#fff' }}>Order ID: {order.OrderID}</Text>}
-                bordered={false}
-                style={{ backgroundColor: '#1e293b', color: '#fff', border: '1px solid transparent', borderImage: 'linear-gradient(135deg, #3b3b98, #1e293b) 1' }}
-              >
-                <Text style={{ color: '#d1d5db' }}>Order Date: {formatDate(order.OrderDate)}</Text>
-                <List
-                  itemLayout="horizontal"
-                  dataSource={order.ProductsBought}
-                  renderItem={(product) => {
-                    const details = productDetails[product.productID];
-                    return details ? (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={<Avatar src={details.image} style={{ border: '2px solid', borderImage: 'linear-gradient(135deg, #3b3b98, #1e293b) 1' }} />}
-                          title={<Text style={{ color: '#fff' }}>{details.title}</Text>}
-                          description={<Text style={{ color: '#9ca3af' }}>Quantity: {product.quantity}</Text>}
-                        />
-                      </List.Item>
-                    ) : (
-                      <List.Item>Loading product details...</List.Item>
-                    );
-                  }}
-                />
-              </Card>
-            </List.Item>
-          )}
-        />
-      )}
-    </div>
+  const h1Styles: CSS.Properties = {
+    right: 0,
+    bottom: "2rem",
+    paddingLeft: "10%",
+    paddingRight: "10%",
+    fontSize: "1.5rem",
+  };
+
+  if(user){
+    return (
+      <div style={h1Styles}>
+          <div>
+              <Title level={2}>
+                  Historia zamówień
+              </Title>
+              {orders.length === 0 ? (
+                  <Alert
+                      message="Brak zamówień"
+                      type="info"
+                      showIcon
+                  />
+              ) : (
+                  <List
+                      grid={{ gutter: 16, column: 1 }}
+                      dataSource={orders}
+                      renderItem={(order) => (
+                          <List.Item>
+                              <Card
+                                  title={
+                                      <Text>
+                                          Numer zamówienia: {order.OrderID}
+                                      </Text>
+                                  }
+                                  
+                              >
+                                  <Text>
+                                      Data zamówienia: {formatDate(order.OrderDate)}
+                                  </Text>
+                                  <List
+                                      itemLayout="horizontal"
+                                      dataSource={order.ProductsBought}
+                                      renderItem={(product) => {
+                                          const details = productDetails[product.productID];
+                                          return details ? (
+                                              <List.Item>
+                                                  <List.Item.Meta
+                                                      avatar={
+                                                          <Avatar
+                                                              src={details.image}
+                                                          />
+                                                      }
+                                                      title={
+                                                          <Text>
+                                                              {details.title}
+                                                          </Text>
+                                                      }
+                                                      description={
+                                                          <Text>
+                                                              Ilość: {product.quantity}
+                                                          </Text>
+                                                      }
+                                                  />
+                                              </List.Item>
+                                          ) : (
+                                              <List.Item>Ładowanie...</List.Item>
+                                          );
+                                      }}
+                                  />
+                              </Card>
+                          </List.Item>
+                      )}
+                  />
+              )}
+          </div>
+      </div>
   );
+  } else {
+    navigate("/");
+  }
+  
 };
+
 
 export default OrderHistory;

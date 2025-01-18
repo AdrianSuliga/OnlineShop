@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import ReviewList from './ReviewList';
 import { Button,Col,Collapse,CollapseProps,Divider,Image, Input, InputNumber, Row } from "antd";
 import Product from './Product';
+import { useCart } from './CartProvider';
 
 interface ProductIDProps {
   productID: number;
@@ -11,6 +12,7 @@ interface ProductIDProps {
 const PurchaseWindow: React.FC<ProductIDProps> = ({productID}) => {
   const [stockLvl, setStockLvl] = useState(10); // Ilość do dodania do koszyka
   const [quantity, setQuantity] = useState(1); // Ilość do dodania do koszyka
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchStockLvl = async () => {
@@ -30,8 +32,12 @@ const PurchaseWindow: React.FC<ProductIDProps> = ({productID}) => {
     if (quantity > stockLvl) {
       alert('Not enough items in stock!');
     } else {
+      addToCart({
+        ProductID: productID,
+        Quantity: quantity,
+      })
       alert(`Added ${quantity} item(s) to the cart.`);
-      setStockLvl(stockLvl-quantity);
+      setStockLvl(stockLvl - quantity);
     }
   };
 

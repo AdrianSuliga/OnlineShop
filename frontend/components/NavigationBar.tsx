@@ -32,7 +32,7 @@ const NavigationBar = () => {
 
         {/* koszyk */}
         <Button id="navButton"
-          onClick={() => navigate('/shoppingcart')}
+          onClick={() => navigate('/cart')}
           style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
         >
           Koszyk

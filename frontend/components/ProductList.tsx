@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Product from './Product';
-import { Divider, Input, Select } from 'antd';
+import { Input, Select } from 'antd';
 
 
 interface ProductType {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useEffect, useState } from 'react';
 import CSS from "csstype";
 import { useAuth } from "./AuthProvider";
 import { Card, Typography, List, Avatar, Spin, Alert } from 'antd';

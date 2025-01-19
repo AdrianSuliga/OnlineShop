@@ -45,22 +45,26 @@ router.post("/add/:productID", async (req, res) => {
 });
 
 // Delete opinions, if user is an admin, they can delete everything
-// URL: http://localhost:port/opinions/delete/:opinionID
+// URL: http://localhost:port/opinions/delete
 // this function expects request body to have:
 // {
+//    RequesterID: ...
 //    UserID: ...
+//    ProductID: ...
 // }
-// opinionID is passed in URL
-router.delete("/delete/:opinionID", async (req, res) => {
+// RequesterID is ID of user who wants to delete opinion,
+// User is the one who made this opinion.
+router.delete("/delete", async (req, res) => {
   const opinionToDelete = await UserOpinions.findOne({
     where: {
-      OpinionID: req.params.opinionID,
+      UserID: req.body.UserID,
+      ProductID: req.body.ProductID,
     },
   });
 
   const userData = await Users.findOne({
     where: {
-      UserID: req.body.UserID,
+      UserID: req.body.RequesterID,
     },
   });
 
@@ -74,10 +78,11 @@ router.delete("/delete/:opinionID", async (req, res) => {
     return;
   }
 
-  if (userData.AdminRights || opinionToDelete.UserID === req.body.UserID) {
+  if (userData.AdminRights || opinionToDelete.UserID === req.body.RequesterID) {
     const deletedEntries = await UserOpinions.destroy({
       where: {
-        OpinionID: req.params.opinionID,
+        UserID: req.body.UserID,
+        ProductID: req.body.ProductID,
       },
     });
 

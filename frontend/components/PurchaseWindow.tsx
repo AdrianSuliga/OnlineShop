@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import ReviewList from './ReviewList';
-import { Button,Col,Collapse,CollapseProps,Divider,Image, Input, InputNumber, Row } from "antd";
-import Product from './Product';
+import { Button, InputNumber } from "antd";
 import { useCart } from './CartProvider';
 
 interface ProductIDProps {

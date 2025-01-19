@@ -4,7 +4,6 @@ import { ProductStockLevels } from "./sqliteInitialize.js";
 const router = express.Router();
 export default router;
 
-
 // Get produt stock levels
 // URL: http://localhost:port/stocklevel/:productID
 router.get("/:productID", async (req, res) => {
@@ -15,8 +14,8 @@ router.get("/:productID", async (req, res) => {
   });
 
   if (lvls === null) {
-    lvls = [];
+    res.status(404).send({info: "Product not found"});
+  } else {
+    res.status(200).send(lvls);
   }
-
-  res.status(200).send(lvls);
 });

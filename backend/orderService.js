@@ -93,7 +93,7 @@ router.get("/details/:userID/:orderID", async (req, res) => {
     },
   });
 
-  if (orders === null) {
+  if (orders.length === 0) {
     res.status(404).send({ info: "Order not found" });
     return;
   }

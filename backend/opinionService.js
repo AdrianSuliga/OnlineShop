@@ -107,9 +107,9 @@ router.get("/:productID", async (req, res) => {
     },
   });
 
-  if (opinions === null) {
-    opinions = [];
+  if (opinions.length === 0) {
+    res.status(404).send({info: "Product not found"});
+  } else {
+    res.status(200).send(opinions);
   }
-
-  res.status(200).send(opinions);
 });

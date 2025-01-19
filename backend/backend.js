@@ -25,10 +25,6 @@ app.use("/orders", orderService);
 app.use("/opinions", opinionService);
 app.use("/stocklevel", stockService);
 
-app.listen(5000, () => {
-  console.log("Backend running on http://localhost:5000");
-});
-
 async function initServer() {
   try {
     await sequelize.authenticate();

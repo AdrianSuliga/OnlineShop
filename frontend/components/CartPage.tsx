@@ -139,30 +139,35 @@ const CartPage = () => {
         }
     }
 
-    return (
-        <div id="cart_container">
-            <Row gutter={24}>
-                <Col span={2}/>
-                <Col span={19}>
-                    <h1 style={{fontSize: "40px"}} >Your Cart</h1>
-                </Col>
-                <Col span={3}/>
-            </Row>
-            <Divider />
-            {productRepresentation}
-            <Row gutter={24}>
-                <Col span={14}/>
-                <Col span={7}>
-                    <h2>Do zapłaty: {TotalPrice} PLN</h2>    
-                    <Button onClick={handlePayment} color='primary' variant='solid'>
-                        Opłać zamówienie
-                    </Button>
-                </Col>
-                <Col span={3}/>
-            </Row>
-            <Divider />
-        </div>
-    );
+    if(user){
+        return (
+            <div id="cart_container">
+                <Row gutter={24}>
+                    <Col span={2}/>
+                    <Col span={19}>
+                        <h1 style={{fontSize: "40px"}} >Your Cart</h1>
+                    </Col>
+                    <Col span={3}/>
+                </Row>
+                <Divider />
+                {productRepresentation}
+                <Row gutter={24}>
+                    <Col span={14}/>
+                    <Col span={7}>
+                        <h2>Do zapłaty: {TotalPrice} PLN</h2>    
+                        <Button onClick={handlePayment} color='primary' variant='solid'>
+                            Opłać zamówienie
+                        </Button>
+                    </Col>
+                    <Col span={3}/>
+                </Row>
+                <Divider />
+            </div>
+        );
+    } else {
+        navigate("/");
+    }
+    
 };
 
 export default CartPage;

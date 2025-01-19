@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Review from './Review';
 import { useAuth } from './AuthProvider';
-import { Input,Button, Rate, Grid, Flex, Collapse, CollapseProps } from "antd";
-import Panel from 'antd/es/splitter/Panel';
+import { Input,Button, Rate, Flex, Collapse, CollapseProps } from "antd";
 
 interface ReviewType {
     userID: number;

@@ -21,32 +21,37 @@ interface ReviewType {
       content: '',
     });
 
+    function onReviewDeleted () {
+      setHasReviewed(false);
+      fetchReviews();
+    }
+
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/opinions/${productID}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch reviews');
+        }
+        const data = await response.json();
+        const transformedReviews = data.map((opinion: any) => ({
+          userID: opinion.UserID,
+          rating: opinion.Rating, // Zastąp oceną z bazy, jeśli istnieje
+          content: opinion.Content,
+          date: opinion.OpinionDate
+        }));
+        setReviews(transformedReviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
     // Obliczanie średniej oceny
     const calculateAverageRating = () => {
         const totalRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
         return reviews.length > 0 ? (totalRatings / reviews.length).toFixed(1) : 'No reviews yet';
     };
 
-    useEffect(() => {
-      const fetchReviews = async () => {
-        try {
-          const response = await fetch(`http://localhost:3000/opinions/${productID}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch reviews');
-          }
-          const data = await response.json();
-          const transformedReviews = data.map((opinion: any) => ({
-            userID: opinion.UserID,
-            rating: opinion.Rating, // Zastąp oceną z bazy, jeśli istnieje
-            content: opinion.Content,
-            date: opinion.OpinionDate
-          }));
-          setReviews(transformedReviews);
-        } catch (error) {
-          console.error('Error fetching reviews:', error);
-        }
-      };
-  
+    useEffect(() => {  
       fetchReviews();
     }, [productID]);
 
@@ -128,8 +133,7 @@ interface ReviewType {
               {reviews.map((review, index) => (
                 <Review
                   key={index}
-                  review={review}
-                />
+                  review={review} productID={productID} onReviewDeleted={onReviewDeleted}                />
               ))}
               {reviews.length === 0 && <p>No reviews yet. Be the first to add one!</p>}
           </div>

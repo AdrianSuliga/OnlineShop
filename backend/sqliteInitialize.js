@@ -99,8 +99,8 @@ export const UserOpinions = sequelize.define(
   }
 );
 
-export const ProductStockLevels = sequelize.define(
-  "ProductStockLevels",
+export const ProductData = sequelize.define(
+  "ProductData",
   {
     ProductID: {
       type: DataTypes.INTEGER,
@@ -109,6 +109,10 @@ export const ProductStockLevels = sequelize.define(
     },
     StockLevel: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    Discount: {
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
   },
@@ -263,30 +267,27 @@ export function getInitialOpinions() {
   ];
 }
 
-export function getInitalStockLevels() {
+export function getInitalProductData() {
   return [
-    { ProductID: 1, StockLevel: 100 },
-    { ProductID: 2, StockLevel: 100 },
-    { ProductID: 3, StockLevel: 100 },
-    { ProductID: 4, StockLevel: 100 },
-    { ProductID: 5, StockLevel: 100 },
-
-    { ProductID: 6, StockLevel: 100 },
-    { ProductID: 7, StockLevel: 100 },
-    { ProductID: 8, StockLevel: 100 },
-    { ProductID: 9, StockLevel: 100 },
-    { ProductID: 10, StockLevel: 100 },
-
-    { ProductID: 11, StockLevel: 100 },
-    { ProductID: 12, StockLevel: 100 },
-    { ProductID: 13, StockLevel: 100 },
-    { ProductID: 14, StockLevel: 100 },
-    { ProductID: 15, StockLevel: 100 },
-
-    { ProductID: 16, StockLevel: 100 },
-    { ProductID: 17, StockLevel: 100 },
-    { ProductID: 18, StockLevel: 100 },
-    { ProductID: 19, StockLevel: 100 },
-    { ProductID: 20, StockLevel: 100 },
+    { ProductID: 1, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 2, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 3, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 4, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 5, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 6, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 7, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 8, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 9, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 10, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 11, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 12, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 13, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 14, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 15, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 16, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 17, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 18, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 19, StockLevel: 100, Discount: 1.0 },
+    { ProductID: 20, StockLevel: 100, Discount: 1.0 },
   ];
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Row, Col, Card, Typography, Space, Divider, Image } from 'antd';
 import { Link } from 'react-router-dom';
+import DailyDiscount from './DailyDiscount';
 
 const { Title, Text } = Typography;
 
@@ -38,34 +39,30 @@ const HomePage: React.FC = () => {
         </Button>
       </div>
 
-      {/* Sekcja polecanych produktów */}
-      {/* <div style={{ marginBottom: '40px' }}>
-        <Title level={2}>Polecane produkty</Title>
-        <Row gutter={[16, 16]}>
-          {products.map((product) => (
-            <Col xs={24} sm={12} md={8} key={product.id}>
-              <Card
-                hoverable
-                cover={<img alt={product.title} src={product.image} />}
-                style={{ borderRadius: '8px' }}
-              >
-                <Card.Meta
-                  title={product.title}
-                  description={
-                    <Space direction="vertical">
-                      <Text>{product.description}</Text>
-                      <Text strong>Cena: {product.price} PLN</Text>
-                      <Button type="primary">
-                        <Link to={`/products/${product.id}`}>Zobacz więcej</Link>
-                      </Button>
-                    </Space>
-                  }
-                />
-              </Card>
-            </Col>
-          ))}
+      {/* Sekcja promocji */}
+      <div
+        style={{
+          backgroundColor: '#ffffff',
+          padding: '20px',
+          borderRadius: '8px',
+          marginBottom: '40px',
+        }}
+      >
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '20px' }}>
+          Dzisiejsze promocje
+        </Title>
+        <Row gutter={[16, 16]} justify="center">
+          <Col xs={24} sm={12} md={8}>
+            <DailyDiscount offset={1} />
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <DailyDiscount offset={2} />
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            <DailyDiscount offset={3} />
+          </Col>
         </Row>
-      </div> */}
+      </div>
 
       {/* Sekcja O nas */}
       <div style={{ marginBottom: '40px' }}>

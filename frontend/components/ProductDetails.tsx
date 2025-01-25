@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ReviewList from './ReviewList';
-import { Button,Col,Collapse,CollapseProps,Divider,Image, Row } from "antd";
+import { Button,Col,Collapse,CollapseProps,Divider,Image, Row, Typography } from "antd";
 import Product from './Product';
 import PurchaseWindow from './PurchaseWindow';
+const { Title, Text } = Typography;
+
 
 interface ProductType {
     id: number;
@@ -20,6 +22,7 @@ const ProductDetails: React.FC = () => {
   const [product, setProduct] = useState<ProductType>();
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1); // Ilość do dodania do koszyka
+  const [discount, setDiscount] = useState<number>(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,8 +36,18 @@ const ProductDetails: React.FC = () => {
             setLoading(false);
         }
     };
+    const fetchDiscount = async () => {
+      try {
+          const response = await fetch(`http://localhost:3000/productdata/${id}`);
+          const data = await response.json();
+          setDiscount( data["Discount"] || 1.0 );
+      } catch (error) {
+          console.error('Error fetching discount:', error);
+      }
+    };
 
     fetchProduct();
+    fetchDiscount();
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
@@ -72,9 +85,24 @@ const ProductDetails: React.FC = () => {
 
             {/* Kolumna opisu */}
             <Col span={12}>
-                <p style={{ marginTop:'20px'}}>
-                    <strong>Cena:</strong> {product.price} PLN
-                </p>
+                {(discount == 1.0) ?
+              <p> <strong>Cena:</strong> {product.price} zł </p>
+            :
+              <div>
+            <div style={{ margin: "10px 0" }}>
+                    <Text delete style={{ marginRight: 8 }}>
+                      {product.price.toFixed(2)} zł
+                    </Text>
+                    <Text strong style={{ color: "red" }}>
+                      {(product.price*discount).toFixed(2)} zł
+                    </Text>
+                  </div>
+                  <Text type="secondary" style={{ display: "block", marginBottom: 10, color: "red" }}>
+                    Promocja: {((1-discount)*100).toFixed(0)}% taniej!
+                  </Text>
+
+                  </div>
+            }
                 
                 <Divider />
 

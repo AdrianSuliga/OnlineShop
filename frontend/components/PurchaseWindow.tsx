@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, InputNumber } from "antd";
+import { Button, InputNumber, Typography } from "antd";
 import { useCart } from './CartProvider';
+const { Title, Text } = Typography;
 
 interface ProductIDProps {
   productID: number;
@@ -14,7 +15,7 @@ const PurchaseWindow: React.FC<ProductIDProps> = ({productID}) => {
   useEffect(() => {
     const fetchStockLvl = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/stocklevel/${productID}`);
+            const response = await fetch(`http://localhost:3000/productdata/${productID}`);
             const data = await response.json();
             setStockLvl( data["StockLevel"] || 10 ); // Domyślnie ustawiamy `10`, jeśli `stock` nie jest dostępny
         } catch (error) {

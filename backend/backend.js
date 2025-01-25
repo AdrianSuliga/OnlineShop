@@ -1,17 +1,17 @@
 import express from "express";
 import cors from "cors";
 import { sequelize } from "./sqliteCreate.js";
-import { Users, OrderHistory, UserOpinions, ProductStockLevels } from "./sqliteInitialize.js";
+import { Users, OrderHistory, UserOpinions, ProductData } from "./sqliteInitialize.js";
 import {
   getInitialUsers,
   getInitialOrders,
   getInitialOpinions,
-  getInitalStockLevels
+  getInitalProductData
 } from "./sqliteInitialize.js";
 import userService from "./userService.js";
 import orderService from "./orderService.js";
 import opinionService from "./opinionService.js";
-import stockService from "./stockService.js";
+import productService from "./productService.js";
 
 const app = express();
 const port = 3000;
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use("/users", userService);
 app.use("/orders", orderService);
 app.use("/opinions", opinionService);
-app.use("/stocklevel", stockService);
+app.use("/productdata", productService);
 
 async function initServer() {
   try {
@@ -38,7 +38,7 @@ async function initServer() {
     Users.bulkCreate(getInitialUsers());
     OrderHistory.bulkCreate(getInitialOrders());
     UserOpinions.bulkCreate(getInitialOpinions());
-    ProductStockLevels.bulkCreate(getInitalStockLevels());
+    ProductData.bulkCreate(getInitalProductData());
 
     app.listen(port, () => {
       console.log(`Example app listening on port ${port}`);

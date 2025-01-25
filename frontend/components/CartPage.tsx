@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useCart } from "./CartProvider";
-import { Button, Col, Divider, Image, InputNumber, Row } from "antd";
+import { Button, Col, Divider, Image, InputNumber, Row, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.tsx";
+const { Title, Text } = Typography;
 
 interface CartProductDetails {
     id: number,
@@ -12,7 +13,8 @@ interface CartProductDetails {
     price: number,
     image: string,
     stock: number,
-    quantity: number
+    quantity: number,
+    discount: number
 }
 
 const CartPage = () => {
@@ -31,6 +33,17 @@ const CartPage = () => {
                     .then((res) => res.json())
                 );
                 const productsData = await Promise.all(productPromises);
+                
+                // Pobierz zniżki dla każdego produktu
+                const discountPromises = productsData.map((product) =>
+                    fetch(`http://localhost:3000/productdata/${product.id}`)
+                    .then((res) => res.json())
+                    .then((data) => data.Discount) // Zakładając, że odpowiedź zawiera Discount
+                    .catch(() => 1) // Jeśli nie uda się pobrać zniżki, przypisz 1 (brak zniżki)
+                );
+        
+                const discounts = await Promise.all(discountPromises);
+        
                 const updatedData: CartProductDetails[] = productsData.map((data, idx) => ({
                     id: data.id,
                     title: data.title,
@@ -39,11 +52,13 @@ const CartPage = () => {
                     price: data.price,
                     image: data.image,
                     stock: data.stock,
-                    quantity: CartItems[idx].Quantity
-                }))
+                    quantity: CartItems[idx].Quantity,
+                    discount: discounts[idx] || 1 // Przypisz zniżkę z odpowiedzi
+                }));
+        
                 updatedData.forEach((data) => {
-                    sum += data.price * data.quantity;
-                })
+                    sum += data.price * data.discount * data.quantity;
+                });
                 sum = parseFloat(sum.toFixed(2));
                 setProducts(updatedData);
                 setTotalPrice(sum);
@@ -76,7 +91,24 @@ const CartPage = () => {
                     </Col>
                     <Col span={3} style={{marginTop: "auto", marginBottom: "auto"}}>
                         <h2>Cena za sztukę</h2>
-                        <p>{product.price} PLN</p>
+                        {(product.discount == 1.0) ?
+                        <p> <strong>Cena:</strong> {product.price} zł </p>
+                        :
+                        <div>
+                        <div style={{ margin: "10px 0" }}>
+                                <Text delete style={{ marginRight: 8 }}>
+                                {product.price.toFixed(2)} zł
+                                </Text>
+                                <Text strong style={{ color: "red" }}>
+                                {(product.price*product.discount).toFixed(2)} zł
+                                </Text>
+                            </div>
+                            <Text type="secondary" style={{ display: "block", marginBottom: 10, color: "red" }}>
+                                Promocja: {((1-product.discount)*100).toFixed(0)}% taniej!
+                            </Text>
+
+                            </div>
+                        }
                     </Col>
                     <Col span={3} style={{marginTop: "auto", marginBottom: "auto"}}>
                         <h2>Ilość</h2>

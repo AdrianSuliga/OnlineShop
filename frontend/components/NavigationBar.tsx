@@ -28,15 +28,21 @@ const NavigationBar = () => {
           Zobacz Produkty
         </Button>
         
-        <p>/</p>
+        {user?(
+          <p>/</p>
+        ):null}
+        
 
         {/* koszyk */}
-        <Button id="navButton"
-          onClick={() => navigate('/cart')}
-          style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
-        >
-          Koszyk
-        </Button>
+        {user?(
+          <Button id="navButton"
+            onClick={() => navigate('/cart')}
+            style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}
+          >
+            Koszyk
+          </Button>
+        ):null}
+        
 
         <p>/</p>
         

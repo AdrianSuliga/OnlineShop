@@ -91,10 +91,16 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/:userID", async (req, res) => {
-  res.status(200).send( await Users.findOne({
+  const userFound = await Users.findOne({
     where: {
       UserID: req.params.userID,
     },
-  }));
+  });
+
+  if (userFound) {
+    res.status(200).send(userFound);
+  } else {
+    res.status(404).send({info: "User not found"});
+  }
 });
 

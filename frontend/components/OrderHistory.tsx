@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CSS from "csstype";
 import { useAuth } from "./AuthProvider";
-import { Card, Typography, List, Avatar, Spin, Alert } from 'antd';
+import { Card, Typography, List, Avatar, Spin, Alert, Button } from 'antd';
 import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
@@ -97,6 +97,37 @@ const OrderHistory = () => {
     }).format(date);
   };
 
+
+  function downloadOrders(orders: Order[], filename: string): void {
+    const textContent = orders
+      .map(
+        (order) =>
+          `Order ID: ${order.OrderID}\nOrder Date: ${order.OrderDate}\nProducts:\n` +
+          order.ProductsBought
+            .map(
+              (product) =>
+                `  - Product ID: ${product.productID}, Quantity: ${product.quantity}`
+            )
+            .join("\n") +
+          "\n"
+      )
+      .join("\n====================\n");
+  
+    const blob = new Blob([textContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+  
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+  
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  
+    URL.revokeObjectURL(url);
+  }
+
+
   if (loading) {
     return <Spin tip="Loading orders..." style={{ display: 'block', margin: '20px auto' }} />;
   }
@@ -120,6 +151,11 @@ const OrderHistory = () => {
               <Title level={2}>
                   Historia zamówień
               </Title>
+              
+              <Button onClick={() => downloadOrders(orders, "orders.txt")} htmlType="button">
+                        Download orders
+              </Button>
+              <br></br><br></br>
               {orders.length === 0 ? (
                   <Alert
                       message="Brak zamówień"
@@ -138,7 +174,6 @@ const OrderHistory = () => {
                                           Numer zamówienia: {order.OrderID}
                                       </Text>
                                   }
-                                  
                               >
                                   <Text>
                                       Data zamówienia: {formatDate(order.OrderDate)}

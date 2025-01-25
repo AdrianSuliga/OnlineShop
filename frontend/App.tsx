@@ -15,6 +15,7 @@ import OrderHistory from "./components/OrderHistory";
 import { AuthProvider } from "./components/AuthProvider";
 import { CartProvider } from "./components/CartProvider";
 import "/styling/global.css";
+import CheckoutPage from "./components/CheckoutPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/orderHistory" element={<OrderHistory />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>
         </Router>
       </CartProvider>

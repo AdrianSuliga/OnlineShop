@@ -140,28 +140,29 @@ const CartPage = () => {
 
     async function handlePayment() {
         if (user && CartItems.length > 0) {
-            try {
-                const response = await fetch("http://localhost:3000/orders/add", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        UserID: user.userID,
-                        ProductsBought: CartItems,
-                    })
-                }); 
+            navigate("/checkout");
+            // try {
+            //     const response = await fetch("http://localhost:3000/orders/add", {
+            //         method: "POST",
+            //         headers: { "Content-Type": "application/json" },
+            //         body: JSON.stringify({
+            //             UserID: user.userID,
+            //             ProductsBought: CartItems,
+            //         })
+            //     }); 
 
-                if (response.ok) {
-                    const result = await response.json();
-                    alert(result.info);
-                    clearCart();
-                    navigate("/");
-                } else {
-                    const err = await response.json();
-                    alert("Order failed, " + err);
-                }
-            } catch (err) {
-                alert(err);
-            }
+            //     if (response.ok) {
+            //         const result = await response.json();
+            //         alert(result.info);
+            //         clearCart();
+            //         navigate("/");
+            //     } else {
+            //         const err = await response.json();
+            //         alert("Order failed, " + err);
+            //     }
+            // } catch (err) {
+            //     alert(err);
+            // }
         } else if (CartItems.length === 0) {
             alert("Cart is empty");
             navigate("/");

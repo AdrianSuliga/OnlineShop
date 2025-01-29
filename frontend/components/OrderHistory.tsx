@@ -20,6 +20,8 @@ interface Order {
 interface ProductDetails {
   id: string;
   title: string;
+  price: number;
+  description: string;
   image: string;
 }
 
@@ -102,16 +104,17 @@ const OrderHistory = () => {
     const textContent = orders
       .map(
         (order) =>
-          `Order ID: ${order.OrderID}\nOrder Date: ${order.OrderDate}\nProducts:\n` +
+          `Order Date: ${order.OrderDate}\nProducts:\n` +
           order.ProductsBought
             .map(
               (product) =>
-                `  - Product ID: ${product.productID}, Quantity: ${product.quantity}`
+                `  - Name: ${productDetails[product.productID].title}, Quantity: ${product.quantity}\n` +
+                `  - Description: ${productDetails[product.productID].description}\n` +
+                `  - Unit Price: ${productDetails[product.productID].price}, Total price: ${productDetails[product.productID].price * product.quantity}`
             )
-            .join("\n") +
-          "\n"
+            .join("\n\n")
       )
-      .join("\n====================\n");
+      .join("\n\n====================\n\n");
   
     const blob = new Blob([textContent], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -126,7 +129,6 @@ const OrderHistory = () => {
   
     URL.revokeObjectURL(url);
   }
-
 
   if (loading) {
     return <Spin tip="Loading orders..." style={{ display: 'block', margin: '20px auto' }} />;
@@ -144,7 +146,7 @@ const OrderHistory = () => {
     fontSize: "1.5rem",
   };
 
-  if(user){
+  if (user) {
     return (
       <div style={h1Styles}>
           <div>
@@ -219,8 +221,6 @@ const OrderHistory = () => {
   } else {
     navigate("/");
   }
-  
 };
-
 
 export default OrderHistory;
